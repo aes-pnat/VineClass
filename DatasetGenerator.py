@@ -40,11 +40,12 @@ def generate():
     df = pd.DataFrame(table) 
     df.to_csv('in_out.csv') 
 
-def train_splitter(train_perc, validate_perc=0):
+#def train_splitter(train_perc, validate_perc=0):
+def train_splitter(train_perc):
     # Splits the generated CSV into train, validation and test
     # as defined by the ratio tuple
     
-    if(train_perc <= 0 and train_perc >= 1 and validate_perc <= 0 and validate_perc >= 1):
+    if(train_perc <= 0.01 and train_perc >= 1):
         raise Exception("Invalid percentages input")
 
     mypath = abspath(__file__).split('DatasetGenerator.py')[0]
@@ -54,12 +55,12 @@ def train_splitter(train_perc, validate_perc=0):
         os.makedirs("cooked_dataset")
         os.makedirs("cooked_dataset\\train")
         os.makedirs("cooked_dataset\\val")
-        os.makedirs("cooked_dataset\\test")
+        #os.makedirs("cooked_dataset\\test")
 
         for w in ['healthy','blackrot','esca','blight']:
             os.makedirs(f'cooked_dataset\\train\\{w}')
             os.makedirs(f'cooked_dataset\\val\\{w}')
-            os.makedirs(f'cooked_dataset\\test\\{w}')
+            #os.makedirs(f'cooked_dataset\\test\\{w}')
 
     else:
         shutil.rmtree("cooked_dataset", ignore_errors=True)
@@ -67,29 +68,27 @@ def train_splitter(train_perc, validate_perc=0):
         os.makedirs("cooked_dataset")
         os.makedirs("cooked_dataset\\train")
         os.makedirs("cooked_dataset\\val")
-        os.makedirs("cooked_dataset\\test")
+        #os.makedirs("cooked_dataset\\test")
 
         for w in ['healthy','blackrot','esca','blight']:
             os.makedirs(f'cooked_dataset\\train\\{w}')
             os.makedirs(f'cooked_dataset\\val\\{w}')
-            os.makedirs(f'cooked_dataset\\test\\{w}')
+            #os.makedirs(f'cooked_dataset\\test\\{w}')
     #shutil.copyfile(src, dst)
 
     s = len(data)
-    test_perc = 1 - train_perc - validate_perc
+    #test_perc = 1 - train_perc - validate_perc
+    validate_perc = 1 - train_perc
     print(data[10])
     for f in data:
         if(f[0] < train_perc*s):
             #train
             shutil.copy(f[1], f'{mypath}cooked_dataset\\train\\{f[2]}')
-        elif(f[0] < train_perc*s + validate_perc*s):
-            #validate
-            shutil.copy(f[1], f'{mypath}cooked_dataset\\val\\{f[2]}')
+        # elif(f[0] < train_perc*s + validate_perc*s):
+        #     #validate
+        #     shutil.copy(f[1], f'{mypath}cooked_dataset\\val\\{f[2]}')
+        # else:
+        #     #test
+        #     shutil.copy(f[1], f'{mypath}cooked_dataset\\test\\{f[2]}')
         else:
-            #test
-            shutil.copy(f[1], f'{mypath}cooked_dataset\\test\\{f[2]}')
-
-
-
-
-
+            shutil.copy(f[1], f'{mypath}cooked_dataset\\val\\{f[2]}')
