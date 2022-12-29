@@ -1,2 +1,2 @@
 # VineClass
-A convolutional neural network for classification of vine diseases.
+A convolutional neural network for classification of grapevine diseases.
