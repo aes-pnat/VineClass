@@ -1,5 +1,5 @@
 import pandas as pd
-import dataset.DatasetGenerator as DG
+import DatasetGenerator as DG
 
 def service_func():
     DG.generate()
